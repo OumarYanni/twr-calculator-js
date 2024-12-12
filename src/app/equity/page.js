@@ -4,22 +4,22 @@ import { useEffect, useState } from "react";
 
 const EquityPage = () => {
   const [equityData, setEquityData] = useState([]);
+  const [twr, setTwr] = useState(null);
 
   useEffect(() => {
     const fetchEquityData = async () => {
       const response = await fetch("/api/equity");
-      const data = await response.json();
-      setEquityData(data);
+      const result = await response.json();
+      setEquityData(result.data);
+      setTwr(result.twr);
     };
     fetchEquityData();
   }, []);
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6 text-center">
-        Calcul de l'Équity
-      </h1>
-      <div className="overflow-x-auto">
+      <h1 className="text-2xl font-bold mb-6 text-center">Calcul TWR</h1>
+      <div className="overflow-x-auto mb-6">
         <table className="table-auto w-full border-collapse border border-gray-300">
           <thead>
             <tr className="bg-gray-100">
@@ -92,6 +92,11 @@ const EquityPage = () => {
           </tbody>
         </table>
       </div>
+      {twr && (
+        <div className="text-center font-semibold text-lg mt-4">
+          TWR depuis la création du compte : {(twr.TWR * 100).toFixed(2)}%
+        </div>
+      )}
     </div>
   );
 };

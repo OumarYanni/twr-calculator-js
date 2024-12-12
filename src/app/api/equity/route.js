@@ -1,4 +1,5 @@
 import data from "../data.json";
+import { multiply } from "mathjs"; // Importer la fonction multiply pour calculer le produit
 
 export async function GET(req) {
   // Étape 1 : Trier les données par date avec Array.prototype.sort
@@ -54,6 +55,23 @@ export async function GET(req) {
     }
   });
 
+  // Étape 2 : Calculer le TWR en utilisant Math.js
+  const rendementPlusUn = sortedData
+    .map((entry) => entry["1 + Rendement"]) // Extraire la colonne "1 + Rendement"
+    .filter((value) => value !== null); // Ignorer les valeurs nulles pour le calcul
+
+  // Calcul du produit des valeurs dans "1 + Rendement"
+  const TWR = rendementPlusUn.reduce((acc, val) => multiply(acc, val), 1) - 1;
+
+  // Étape 3 : Ajouter une ligne TWR avec seulement la désignation et le résultat
+  const twrRow = {
+    Désignation: "TWR depuis la création du compte ",
+    TWR: TWR, // Le résultat calculé du TWR
+  };
+
   // Retourner les résultats sous forme de réponse JSON
-  return new Response(JSON.stringify(sortedData), { status: 200 });
+  //return new Response(JSON.stringify(sortedData), { status: 200 });
+  return new Response(JSON.stringify({ data: sortedData, twr: twrRow }), {
+    status: 200,
+  });
 }
