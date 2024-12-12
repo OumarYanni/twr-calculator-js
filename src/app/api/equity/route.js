@@ -15,6 +15,10 @@ export async function GET(req) {
       entry["Flux de trésorerie (net_amount)"] = null; // NULL ou N/A pour la première ligne car pas de flux de tréso au départ
 
       entry["Valeur totale portefeuille APRES event"] = null; // NULL ou N/A pour la première ligne car pas de flux de tréso au départ
+
+      // Colonnes supplémentaires initialisées à NULL pour la première ligne
+      entry["Rendement"] = null;
+      entry["1 + Rendement"] = null;
     } else if (index === 1) {
       // Seconde ligne : "Valeur totale portefeuille AVANT event" égale à celle de la première ligne
       entry["Valeur totale portefeuille AVANT event"] =
@@ -23,6 +27,14 @@ export async function GET(req) {
       entry["Valeur totale portefeuille APRES event"] =
         entry["Valeur totale portefeuille AVANT event"] +
         entry["Flux de trésorerie (net_amount)"];
+
+      // Colonnes supplémentaires pour calculer le rendement et 1+rendement
+      entry["Rendement"] =
+        entry["Valeur totale portefeuille APRES event"] /
+          entry["Valeur totale portefeuille AVANT event"] -
+        1;
+
+      entry["1 + Rendement"] = 1 + entry["Rendement"];
     } else {
       // Lignes suivantes : "Valeur totale portefeuille AVANT event" égale à "Valeur totale portefeuille APRES event" de la ligne précédente
       entry["Valeur totale portefeuille AVANT event"] =
@@ -32,6 +44,13 @@ export async function GET(req) {
       entry["Valeur totale portefeuille APRES event"] =
         entry["Valeur totale portefeuille AVANT event"] +
         entry["Flux de trésorerie (net_amount)"];
+
+      // Colonnes supplémentaires pour calculer le rendement et 1+rendement
+      entry["Rendement"] =
+        entry["Valeur totale portefeuille APRES event"] /
+          entry["Valeur totale portefeuille AVANT event"] -
+        1;
+      entry["1 + Rendement"] = 1 + entry["Rendement"];
     }
   });
 

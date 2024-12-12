@@ -41,6 +41,12 @@ const EquityPage = () => {
               <th className="border border-gray-300 px-4 py-2 text-right">
                 Valeur totale portefeuille APRES event
               </th>
+              <th className="border border-gray-300 px-4 py-2 text-right">
+                Rendement
+              </th>
+              <th className="border border-gray-300 px-4 py-2 text-right">
+                1 + Rendement
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -69,6 +75,16 @@ const EquityPage = () => {
                 <td className="border border-gray-300 px-4 py-2 text-right">
                   {row["Valeur totale portefeuille APRES event"] !== null
                     ? row["Valeur totale portefeuille APRES event"].toFixed(2)
+                    : "N/A"}
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-right">
+                  {row["Rendement"] !== null
+                    ? (row["Rendement"] * 100).toFixed(2) + "%"
+                    : "N/A"}
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-right">
+                  {row["1 + Rendement"] !== null
+                    ? row["1 + Rendement"].toFixed(2)
                     : "N/A"}
                 </td>
               </tr>
