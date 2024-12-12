@@ -1,9 +1,8 @@
 import data from "../data.json";
-import _ from "lodash";
 
 export async function GET(req) {
-  // Étape 1 : Trier les données par date
-  const sortedData = _.sortBy(data, (entry) => new Date(entry.Date));
+  // Étape 1 : Trier les données par date avec Array.prototype.sort
+  const sortedData = data.sort((a, b) => new Date(a.Date) - new Date(b.Date));
 
   // Initialiser les colonnes pour "Valeur totale portefeuille AVANT event" et "Valeur totale portefeuille APRES event"
   sortedData.forEach((entry, index) => {
@@ -23,7 +22,7 @@ export async function GET(req) {
       // Seconde ligne : "Valeur totale portefeuille AVANT event" égale à celle de la première ligne
       entry["Valeur totale portefeuille AVANT event"] =
         sortedData[0]["Valeur totale portefeuille AVANT event"];
-      // On effectue calcul différent à tout le reste car "Valeur totale portefeuille APRES event" n'existe pas encore en raison de l'absence de flux (event)
+      // On effectue un calcul différent car "Valeur totale portefeuille APRES event" n'existe pas encore en raison de l'absence de flux (event)
       entry["Valeur totale portefeuille APRES event"] =
         entry["Valeur totale portefeuille AVANT event"] +
         entry["Flux de trésorerie (net_amount)"];
@@ -50,6 +49,7 @@ export async function GET(req) {
         entry["Valeur totale portefeuille APRES event"] /
           entry["Valeur totale portefeuille AVANT event"] -
         1;
+
       entry["1 + Rendement"] = 1 + entry["Rendement"];
     }
   });
