@@ -63,10 +63,26 @@ export async function GET(req) {
   // Calcul du produit des valeurs dans "1 + Rendement"
   const TWR = rendementPlusUn.reduce((acc, val) => multiply(acc, val), 1) - 1;
 
-  // Étape 3 : Ajouter une ligne TWR avec seulement la désignation et le résultat
+  /*// Étape 3 : Ajouter une ligne TWR avec seulement la désignation et le résultat
   const twrRow = {
     Désignation: "TWR depuis la création du compte ",
     TWR: TWR, // Le résultat calculé du TWR
+  };*/
+
+  // Calcul de la durée totale du compte en jours
+  const startDate = new Date(sortedData[0].Date);
+  const endDate = new Date(sortedData[sortedData.length - 1].Date);
+  const totalDays = (endDate - startDate) / (1000 * 60 * 60 * 24);
+
+  console.log(totalDays);
+
+  // Calcul du TWR annualisé
+  const annualizedTWR = Math.pow(1 + TWR, 365 / totalDays) - 1;
+
+  // Ajout des lignes à afficher dans l'ui
+  const twrRow = {
+    TWR: TWR,
+    TWR_annualized: annualizedTWR,
   };
 
   // Retourner les résultats sous forme de réponse JSON

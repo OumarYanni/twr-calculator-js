@@ -93,8 +93,14 @@ const EquityPage = () => {
         </table>
       </div>
       {twr && (
-        <div className="text-center font-semibold text-lg mt-4">
-          TWR depuis la création du compte : {(twr.TWR * 100).toFixed(2)}%
+        <div className="text-center font-semibold text-lg mt-4 space-y-2">
+          <div>
+            TWR depuis la création du compte : {(twr.TWR * 100).toFixed(2)}%
+          </div>
+          <div>TWR annualisé : {twr.TWR_annualized.toFixed(6)}</div>
+          <div>
+            TWR annualisé (en %) : {(twr.TWR_annualized * 100).toFixed(2)}%
+          </div>
         </div>
       )}
     </div>
